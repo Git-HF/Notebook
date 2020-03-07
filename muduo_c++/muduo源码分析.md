@@ -30,3 +30,22 @@
 ### 7. `EventLoopThread`
 - 这个类主要数据成员包含一个线程类`Thread`和事件循环类`EventLoop`，其主要作用就是开启一个新的线程，并且在新的线程中创建一个`EventLoop`对象。该类体现了 ***one_loop_per_thread*** 思想。
 - `startLoop()`是其关键的成员函数，函数流程为先启动线程，然后在新线程中创建`EventLoop`对象；由于原线程需要返回这个对象的地址，所以需要使用条件变量，让原线程等待新线程创建完`EventLoop`对象才能返回。
+
+### 8. `Acceptor`
+- 该类主要是对一般服务端网络编程流程的一个封装。首先调用`Socket`创建一个非阻塞式套接字，该套接字是监听套接字；然后利用`Channel`对于套接字描述符封装一下，这样可以在`EventLoop`主循环中监听；接着使用`bind`函数为套接字绑定地址，并且设置一下套接字可读时的回调函数；最后单独调用`listen`，监听端口。
+- 主要数据成员包括：
+  * 指向`EventLoop`对象的指针
+  * `Socket`对象，用来表示监听套接字
+  * `Channel`对象，对监听套接字的封装，通过设置回调，来处理监听套接字可读事件
+  * `NewConnectionCallback`对象，一个回调函数；当有新的连接套接字建立时，调用回调函数，处理该事件。
+
+### 9. `TcpServer`
+- 该类主要是用来管理`Acceptor`对象和`TcpConnection`对象；通过在`Acceptor`中注册新连接回调函数，当有新连接建立时，生成`TcpConnection`对象。在`TcpServer`中，使用map数据结构来存储`TcpConnection`对象，关键字是由`TcpServer`为每个`TcpConnetion`生成的唯一标识( ***能不能不需要标识，在`TcpServer`中使用`set`来存储`TcpConnection`)；
+- 注意：对于监听套接字，其回调函数是`newConnection`函数；而对于新的连接套接字，其回调函数是`connectionCallback_`和`messageCallback_`。由于用户直接使用的是`TcpServer`类，所以用户先将连接套接字的两个回调函数传递给`TcpServer`，当有新的连接套接字建立时，`TcpServer`再将这两个回调函数传递给`TcpConnection`；
+
+### 10. 关于`enable_shared_from_this`类的详解：
+- [连接]([https://blog.csdn.net/QIANGWEIYUAN/article/details/88973735)
+
+### 11. `TcpConnection`
+- 一个`TcpConnection`对象表示一次Tcp连接，其建立和销毁由`TcpServer`来控制。
+- 主要数据成员包括标识连接套接字的`Socket`对象；和对连接套接字描述符进行封装的`Channel`对象；一个用于处理连接建立和断开事件；的`ConnectionCallback`回调函数；一个用于处理接收消息事件的`MessageCallback`回调函数。
