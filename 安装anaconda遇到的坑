@@ -1,0 +1,8 @@
+1. 在运行anaconda的软件包时（bash ......），不是加sudo，不然创建的anaconda中大部分文件均为root权限，无法使用
+
+2. 安装anaconda时，所有选项最好全选yes，特别是
+Do you wish the installer to initialize Anaconda3
+by running conda init? [yes|no],
+如果该选项不选yes，则需要手动配置PATH比较麻烦
+
+3 最好把anaconda中的源镜像修改为国内的镜像，例如清华源（注意，中科大等很多高校镜像因为版权问题已经不提供更新）。否则在安装包时，网速特别慢，而且经常无法下载。
