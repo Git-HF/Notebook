@@ -1,0 +1,10 @@
+安装库说明：
+conda install tqdm
+conda install -c menpo opencv
+conda install torchvision
+安装完torchvision,若出现“ImportError: cannot import name 'PILLOW_VERSION'” 错误，说明torchvison版本过高
+执行 conda install 'pillow<7.0.0'
+conda install scipy
+
+在修改launch.json后（使运行程序时带参数），需要新建终端才能其效果。
+
