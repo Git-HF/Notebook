@@ -40,7 +40,7 @@
   * `NewConnectionCallback`对象，一个回调函数；当有新的连接套接字建立时，调用回调函数，处理该事件。
 
 ### 9. `TcpServer`
-- 该类主要是用来管理`Acceptor`对象和`TcpConnection`对象；通过在`Acceptor`中注册新连接回调函数，当有新连接建立时，生成`TcpConnection`对象。在`TcpServer`中，使用map数据结构来存储`TcpConnection`对象，关键字是由`TcpServer`为每个`TcpConnetion`生成的唯一标识( ***能不能不需要标识，在`TcpServer`中使用`set`来存储`TcpConnection`)；
+- 该类主要是用来管理`Acceptor`对象和`TcpConnection`对象；通过在`Acceptor`中注册新连接回调函数，当有新连接建立时，生成`TcpConnection`对象。在`TcpServer`中，使用map数据结构来存储`TcpConnection`对象，关键字是由`TcpServer`为每个`TcpConnetion`生成的唯一标识( ***能不能不需要标识，在`TcpServer`中使用`set`来存储`TcpConnection`***)；
 - 注意：对于监听套接字，其回调函数是`newConnection`函数；而对于新的连接套接字，其回调函数是`connectionCallback_`和`messageCallback_`。由于用户直接使用的是`TcpServer`类，所以用户先将连接套接字的两个回调函数传递给`TcpServer`，当有新的连接套接字建立时，`TcpServer`再将这两个回调函数传递给`TcpConnection`；
 
 ### 10. 关于`enable_shared_from_this`类的详解：
