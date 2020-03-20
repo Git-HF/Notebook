@@ -34,7 +34,7 @@ void HttpResponse::setBody(const char* file_name)
 
 void HttpResponse::defaultResponse()
 {
-    setVersion("HTTP1.1");
+    setVersion("HTTP/1.1");
     setState("200");
     setStateDescription("OK");
     setHead("Content-Type", "text/html");
@@ -44,7 +44,6 @@ void HttpResponse::defaultResponse()
 
 void returnResponse(const HttpResponse& response, int connectFd)
 {
-    /*
     const char* crlf = "\r\n";
     string tmp;
 
@@ -68,8 +67,5 @@ void returnResponse(const HttpResponse& response, int connectFd)
 
     tmp = response.getBody();
     write(connectFd, tmp.c_str(), tmp.size());
-    */
 
-   char buf[] = "HTTP/1.1 200 OK\r\nContent-Type:text/plain\r\nContent-Length:4\r\nConnection:close\r\n\r\ntrue";
-   write(connectFd, buf, sizeof(buf));
 }
