@@ -1,5 +1,5 @@
-关于**webbench**的功能和原理，这里不做介绍，详情可见[webbench介绍](https://www.jianshu.com/p/dc1032b19c8d)。  
+关于**webbench**的功能和原理，这里不做介绍，详情可见[webbench介绍](https://www.jianshu.com/p/dc1032b19c8d)。[webbench源码剖析](https://blog.csdn.net/jcjc918/article/details/44965951?depth_1-utm_source=distribute.pc_relevant.none-task&utm_source=distribute.pc_relevant.none-task) 。 
 ***
 [下载与安装教程](https://blog.csdn.net/deep_kang/article/details/81204489)
 ***
-虽然webbench是一个web服务器的压测软件，但是它只是发送GET请求，并且对于服务端的响应不要求必须是HTTP响应报文，他对QPS的计算只是计算每次的请求是否有响应，所以webbench也可以用来测试echo服务器。
+webbench计算服务器性能的方式：每个子进程发送一个http请求，然后就关闭发送端的文件描述符，然后阻塞在`read`上。当读取完服务端发送的所有数据后，累加相应的字节数，然后成功请求数量加1，一次http请求和应答就此完成。结束测试时，父进程会累加所有子进程成功完成的http请求、收到的字节数和未完成的http请求。

@@ -9,6 +9,7 @@
 #include "HttpRequest.h"
 
 #define BUFLEN 65536
+#define DEFAULT_PORT 9876
 int main()
 {
     int listenFd = socket(AF_INET, SOCK_STREAM, 0);
@@ -17,7 +18,7 @@ int main()
     sockaddr_in addr;
     bzero(&addr, sizeof(addr)); 
     addr.sin_family = AF_INET;
-    addr.sin_port = htons(9876);
+    addr.sin_port = htons(DEFAULT_PORT);
     addr.sin_addr.s_addr = htonl(INADDR_ANY);
 
     //开启地址重用，为了当服务器关闭时，可以立马重启，如果不设置这个，可能存在TIME_WAIT状态的连接导致bind失败。
@@ -40,7 +41,10 @@ int main()
         char buf[BUFLEN];
         int len;
         HttpRequest request;
+        HttpResponse response;
+        response.defaultResponse();
         string strbuf;
+        
         while ((len = read(connectFd, buf, sizeof(buf))) != 0)
         {
             if(len > 0)
@@ -55,13 +59,11 @@ int main()
 
                 if(request.is_got_all())
                 {
-                    //request.output();
-                    HttpResponse response;
-                    response.defaultResponse();
                     returnResponse(response, connectFd);
-
+                    request.reset();
                     //printf("response over\n");
                     //注意此处不能是close，否则再次返回read会出错。
+                    //使用webbench测试时，客户端会主动关闭连接。这里主要是为了浏览器访问。
                     shutdown(connectFd, SHUT_WR);
                 }
             }

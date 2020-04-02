@@ -48,24 +48,24 @@ void returnResponse(const HttpResponse& response, int connectFd)
     string tmp;
 
     tmp = response.getVersion() + " ";
-    write(connectFd, tmp.c_str(), tmp.size());
+    //write(connectFd, tmp.c_str(), tmp.size());
 
-    tmp = response.getState() + " ";
-    write(connectFd, tmp.c_str(), tmp.size());
+    tmp += response.getState() + " ";
+    //write(connectFd, tmp.c_str(), tmp.size());
 
-    tmp = response.getStateDescription() + crlf;
-    write(connectFd, tmp.c_str(), tmp.size());
+    tmp += response.getStateDescription() + crlf;
+    //write(connectFd, tmp.c_str(), tmp.size());
 
     for(const auto & item : response.getHeads())
     {
-        tmp = item.first + ":" + item.second + crlf;
-        write(connectFd, tmp.c_str(), tmp.size());
+        tmp += item.first + ":" + item.second + crlf;
+        //write(connectFd, tmp.c_str(), tmp.size());
     }
 
-    tmp = crlf;
-    write(connectFd, tmp.c_str(), tmp.size());
+    tmp += crlf;
+    //write(connectFd, tmp.c_str(), tmp.size());
 
-    tmp = response.getBody();
+    tmp += response.getBody();
     write(connectFd, tmp.c_str(), tmp.size());
 
 }
