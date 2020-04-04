@@ -6,5 +6,5 @@ webbench计算服务器性能的方式：每个子进程发送一个http请求�
 
 - - - 
 **webbench**运行结果
-![](../picture/webbench运行结果.png)
+![](../picture/webbench运行结果.png)  
 其中**Requsts**中**susceed**和**failed**表示在测试的这段时间**t**中，成功和失败的总请求数。**Speed**表示 **(susceed+failed/t*60)** ，即每分钟成功和失败的请求总数。后面的表示每秒传输的字节数。
