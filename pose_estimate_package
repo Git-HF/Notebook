@@ -8,3 +8,9 @@ conda install scipy
 
 在修改launch.json后（使运行程序时带参数），需要新建终端才能其效果。
 
+错误：ModuleNotFoundError: No module named 'mpl_toolkits'
+conda install matplotlib
+
+错误：ImportError: cannot import name 'model_zoo'
+新版本pytorch的model_zoo更换了地方，所以需要重新安装pytorch或者修改代码
+
